@@ -1,0 +1,70 @@
+@import "tailwindcss";
+
+:root {
+  /* Status colors — fixed */
+  --color-available: #22C55E;
+  --color-edge:      #F59E0B;
+  --color-sleeping:  #EF4444;
+
+  /* Theme-driven primary (updated by ThemeProvider) */
+  --color-primary:       #3B82F6;
+  --color-primary-light: #DBEAFE;
+
+  /* Mobile dark bg (updated by ThemeProvider) */
+  --color-bg:   #0F172A;
+  --color-card: #1E293B;
+
+  /* Desktop palette (updated by ThemeProvider) */
+  --dt-bg:             #EFEFED;
+  --dt-card:           #FFFFFF;
+  --dt-text:           #111111;
+  --dt-text-secondary: #888888;
+  --dt-border:         #D8D8D6;
+  --dt-input:          #E2E2E0;
+}
+
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  background-color: var(--color-bg);
+  color: #F8FAFC;
+  font-family: 'Inter', sans-serif;
+  margin: 0;
+  padding: 0;
+  overscroll-behavior: none;
+}
+
+#root {
+  min-height: 100dvh;
+  position: relative;
+}
+
+@media (max-width: 899px) {
+  #root {
+    max-width: 430px;
+    margin: 0 auto;
+    overflow: hidden;
+  }
+}
+
+@media (min-width: 900px) {
+  body { background-color: var(--dt-bg); }
+}
+
+.scrollbar-hide::-webkit-scrollbar { display: none; }
+.scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* Leaflet tooltip override */
+.leaflet-tooltip {
+  background: rgba(15,23,42,0.9) !important;
+  border: 1px solid #334155 !important;
+  color: #F8FAFC !important;
+  font-family: 'Inter', sans-serif !important;
+  font-size: 11px !important;
+  border-radius: 6px !important;
+  box-shadow: none !important;
+}
+.leaflet-tooltip::before { display: none !important; }
