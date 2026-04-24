@@ -17,12 +17,12 @@ export function getLocalTime(timezone: string): Date {
   return new Date(get('year'), get('month') - 1, get('day'), get('hour'), get('minute'), get('second'))
 }
 
-export function formatTime(timezone: string): string {
+export function formatTime(timezone: string, hour12 = true): string {
   return new Intl.DateTimeFormat('en-US', {
     timeZone: timezone,
     hour: '2-digit',
     minute: '2-digit',
-    hour12: true,
+    hour12,
   }).format(new Date())
 }
 
@@ -48,7 +48,7 @@ export function getTimeDiff(timezone: string, userTimezone: string): number {
   return Math.round(diffMs / (1000 * 60 * 60))
 }
 
-export function enrichLocation(loc: Location, userTimezone: string): LocationWithTime {
+export function enrichLocation(loc: Location, userTimezone: string, hour12 = true): LocationWithTime {
   const localTime = getLocalTime(loc.timezone)
   const hour = localTime.getHours()
   const minute = localTime.getMinutes()
@@ -58,7 +58,7 @@ export function enrichLocation(loc: Location, userTimezone: string): LocationWit
     hour,
     minute,
     status: getStatus(hour, loc.workStart, loc.workEnd),
-    timeString: formatTime(loc.timezone),
+    timeString: formatTime(loc.timezone, hour12),
     dateString: formatDate(loc.timezone),
     diffHours: getTimeDiff(loc.timezone, userTimezone),
   }
@@ -114,8 +114,8 @@ export function computeOverlap(locations: Location[]): OverlapWindow | null {
         return { locationId: loc.id, city: loc.city, start: fmt(utcStart), end: fmt(utcEnd) }
       })
       bestWindow = {
-        startUTC: startHour,
-        endUTC: startHour + overlapDuration,
+        startUTC: startHour % 24,
+        endUTC: (startHour + overlapDuration) % 24,
         durationHours: overlapDuration,
         qualityScore: Math.min(100, Math.round((overlapDuration / 4) * 100)),
         localTimes,

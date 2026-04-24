@@ -29,11 +29,13 @@ interface AppState {
   userTimezone: string
   theme: ThemeKey
   desktopDark: boolean
+  hour12: boolean
   addLocation: (loc: Location) => void
   removeLocation: (id: string) => void
   hasLocation: (id: string) => boolean
   setTheme: (t: ThemeKey) => void
   toggleDesktopDark: () => void
+  toggleHour12: () => void
 }
 
 export const useStore = create<AppState>()(
@@ -43,11 +45,13 @@ export const useStore = create<AppState>()(
       userTimezone: getUserTimezone(),
       theme: 'blue',
       desktopDark: false,
+      hour12: true,
       addLocation: (loc) => set(s => ({ locations: [...s.locations, loc] })),
       removeLocation: (id) => set(s => ({ locations: s.locations.filter(l => l.id !== id) })),
       hasLocation: (id) => get().locations.some(l => l.id === id),
       setTheme: (t) => set({ theme: t }),
       toggleDesktopDark: () => set(s => ({ desktopDark: !s.desktopDark })),
+      toggleHour12: () => set(s => ({ hour12: !s.hour12 })),
     }),
     { name: 'timeops-storage' }
   )

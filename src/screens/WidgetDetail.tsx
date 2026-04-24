@@ -9,17 +9,17 @@ import { StatusDot } from '../components/StatusDot'
 export function WidgetDetail() {
   const { id } = useParams<{ id: string }>()
   const navigate = useNavigate()
-  const { locations, userTimezone, removeLocation } = useStore()
+  const { locations, userTimezone, removeLocation, hour12 } = useStore()
   const [loc, setLoc] = useState<LocationWithTime | null>(null)
 
   useEffect(() => {
     const raw = locations.find(l => l.id === id)
     if (!raw) { navigate('/'); return }
-    const update = () => setLoc(enrichLocation(raw, userTimezone))
+    const update = () => setLoc(enrichLocation(raw, userTimezone, hour12))
     update()
     const interval = setInterval(update, 1000)
     return () => clearInterval(interval)
-  }, [id, locations, userTimezone, navigate])
+  }, [id, locations, userTimezone, hour12, navigate])
 
   if (!loc) return null
 
@@ -51,7 +51,7 @@ export function WidgetDetail() {
         <div style={{ fontSize: 16, fontWeight: 700, color: '#F8FAFC' }}>{loc.city}</div>
       </div>
 
-      <div style={{ flex: 1, padding: '0 20px 32px', overflowY: 'auto' }}>
+      <div style={{ flex: 1, padding: '0 20px 80px', overflowY: 'auto' }}>
         {/* Flag + Location */}
         <div style={{ textAlign: 'center', marginBottom: 24 }}>
           <div style={{ fontSize: 64, marginBottom: 8 }}>{flagEmoji(loc.countryCode)}</div>

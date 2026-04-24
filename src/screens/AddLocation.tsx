@@ -7,7 +7,7 @@ import { StatusDot } from '../components/StatusDot'
 
 export function AddLocation() {
   const navigate = useNavigate()
-  const { userTimezone, addLocation, removeLocation, hasLocation } = useStore()
+  const { userTimezone, addLocation, removeLocation, hasLocation, hour12 } = useStore()
   const [query, setQuery] = useState('')
 
   const filtered = PRESET_CITIES.filter(c =>
@@ -65,9 +65,9 @@ export function AddLocation() {
       </div>
 
       {/* List */}
-      <div style={{ flex: 1, overflowY: 'auto', padding: '0 16px 32px' }}>
+      <div style={{ flex: 1, overflowY: 'auto', padding: '0 16px 80px' }}>
         {filtered.map(city => {
-          const enriched = enrichLocation(city, userTimezone)
+          const enriched = enrichLocation(city, userTimezone, hour12)
           const added = hasLocation(city.id)
 
           return (

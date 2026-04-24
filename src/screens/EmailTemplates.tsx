@@ -416,7 +416,7 @@ export function EmailTemplates() {
         </div>
 
         {/* Preview */}
-        <div style={{ flex: 1, overflowY: 'auto', padding: '24px' }}>
+        <div style={{ flex: 1, overflowY: 'auto', padding: '24px 24px 80px' }}>
           {/* Template header */}
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 16, gap: 12 }}>
             <div>

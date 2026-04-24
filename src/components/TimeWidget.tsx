@@ -42,10 +42,10 @@ export function TimeWidget({ location }: Props) {
       </div>
 
       {/* City */}
-      <div style={{ fontSize: 13, fontWeight: 600, color: '#94A3B8' }}>{location.city}</div>
+      <div style={{ fontSize: 7, fontWeight: 600, color: '#94A3B8', textTransform: 'uppercase', letterSpacing: '0.04em' }}>{location.city}</div>
 
       {/* Time */}
-      <div style={{ fontSize: 28, fontWeight: 800, color: '#F8FAFC', lineHeight: 1 }}>
+      <div style={{ fontSize: 14, fontWeight: 800, color: '#F8FAFC', lineHeight: 1 }}>
         {location.timeString}
       </div>
 

@@ -46,11 +46,11 @@ function liveDate(timezone: string): string {
 
 export function DesktopDashboard() {
   const navigate = useNavigate()
-  const { locations, userTimezone, removeLocation, desktopDark, toggleDesktopDark } = useStore()
+  const { locations, userTimezone, removeLocation, desktopDark, toggleDesktopDark, hour12, toggleHour12 } = useStore()
+  const use24h = !hour12
   const [enriched, setEnriched]   = useState<LocationWithTime[]>([])
   const [heroTime, setHeroTime]   = useState('')
   const [heroDate, setHeroDate]   = useState('')
-  const [use24h, setUse24h]       = useState(true)
   const [search, setSearch]       = useState('')
   const [showSearch, setShowSearch] = useState(false)
   const [activeId, setActiveId]   = useState<string | null>(null)
@@ -190,7 +190,7 @@ export function DesktopDashboard() {
 
       {/* ── Hero clock ───────────────────────────────────────── */}
       <div style={{ padding: '16px 48px 28px', borderBottom: '1px solid ' + border }}>
-        <div style={{ fontSize: 'clamp(72px, 11vw, 156px)', fontWeight: 800, lineHeight: 1, letterSpacing: '-4px', color: text, fontVariantNumeric: 'tabular-nums' }}>
+        <div style={{ fontSize: 'clamp(36px, 5.5vw, 78px)', fontWeight: 800, lineHeight: 1, letterSpacing: '-2px', color: text, fontVariantNumeric: 'tabular-nums' }}>
           {heroTime}
         </div>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 12 }}>
@@ -202,7 +202,7 @@ export function DesktopDashboard() {
             </div>
             <div style={{ display: 'flex', background: input, borderRadius: 100, padding: 3 }}>
               {['12h', '24h'].map(opt => (
-                <button key={opt} onClick={() => setUse24h(opt === '24h')}
+                <button key={opt} onClick={() => { if ((opt === '24h') !== use24h) toggleHour12() }}
                   style={{
                     background: (opt === '24h') === use24h ? primary : 'transparent',
                     color:      (opt === '24h') === use24h ? '#fff'   : textSec,
@@ -222,8 +222,8 @@ export function DesktopDashboard() {
           <div>
             {activeLoc ? (
               <>
-                <div style={{ fontSize: 'clamp(28px, 4vw, 52px)', fontWeight: 800, lineHeight: 1.1, color: text }}>{activeLoc.city},</div>
-                <div style={{ fontSize: 'clamp(28px, 4vw, 52px)', fontWeight: 800, lineHeight: 1.1, color: text }}>{activeLoc.country}</div>
+                <div style={{ fontSize: 'clamp(14px, 2vw, 26px)', fontWeight: 800, lineHeight: 1.1, color: text }}>{activeLoc.city},</div>
+                <div style={{ fontSize: 'clamp(14px, 2vw, 26px)', fontWeight: 800, lineHeight: 1.1, color: text }}>{activeLoc.country}</div>
               </>
             ) : (
               <div style={{ fontSize: 40, fontWeight: 800, color: textSec }}>No locations yet</div>
@@ -249,14 +249,14 @@ export function DesktopDashboard() {
             <span style={{ color: primary, fontWeight: 600, cursor: 'pointer', textDecoration: 'underline' }} onClick={() => navigate('/add')}>Add your first city</span>
           </div>
         ) : (
-          <div style={{ display: 'flex', gap: 14, overflowX: 'auto', paddingBottom: 8 }} className="scrollbar-hide">
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: 14, paddingBottom: 8 }}>
             {enriched.map(loc => {
               const isActive = loc.id === (activeId ?? enriched[0]?.id)
               const dn       = getDayNight(loc.hour)
               return (
                 <div key={loc.id} onClick={() => setActiveId(loc.id)}
                   style={{
-                    flexShrink: 0, width: 220, borderRadius: 20, padding: '20px 22px 22px',
+                    borderRadius: 20, padding: '20px 22px 22px',
                     background: isActive ? primary : card,
                     color:      isActive ? '#fff'   : text,
                     cursor: 'pointer', transition: 'background 0.2s', position: 'relative',
